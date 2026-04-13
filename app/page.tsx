@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Mail, MapPin, ArrowUpRight, ArrowDown, FileUser } from "lucide-react";
-import { FiGithub, FiLinkedin } from "react-icons/fi";
+import { FiLinkedin } from "react-icons/fi";
 import { SiNextdotjs } from "react-icons/si";
 
 export default function Home() {
@@ -95,17 +95,6 @@ export default function Home() {
             <ArrowUpRight size={16} className="text-neutral-700 group-hover:text-blue-400 transition-colors" />
           </a>
 
-          <a href="https://github.com/albertbastl" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors shadow-sm">
-            <div className="p-2 bg-white/10 rounded-full text-white group-hover:scale-110 transition-transform">
-              <FiGithub size={18} />
-            </div>
-            <div className="flex-grow">
-              <p className="text-white font-medium text-sm group-hover:text-red-500 transition-colors">GitHub</p>
-              <p className="text-neutral-500 text-xs">albertbastl</p>
-            </div>
-            <ArrowUpRight size={16} className="text-neutral-700 group-hover:text-neutral-100 transition-colors" />
-          </a>
-
           <a href="/CV-Albert-Bastl.pdf" download className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors shadow-sm border border-neutral-700 hover:border-neutral-500">
             <div className="p-2 bg-white/10 rounded-full text-white group-hover:scale-110 transition-transform">
               <FileUser size={18} />
@@ -156,7 +145,6 @@ export default function Home() {
                 link: "https://www.iansa.eu",
                 tags: ["PHP"]
               },
-            // ZDE JE ZMĚNA: explicitní definice typu pro parametr `project`
             ].map((project: { name: string; desc: string; link: string; tags: string[]; disabled?: boolean }, i) => {
               if (project.disabled) {
                 return (
@@ -179,7 +167,6 @@ export default function Home() {
                   <div>
                     <h3 className="font-semibold text-white group-hover:text-neutral-300 transition-colors text-base">{project.name}</h3>
                     <p className="text-sm text-neutral-500 mt-1 mb-3">{project.desc}</p>
-                    {/* Zde jsou přidány štítky pro projekty */}
                     <div className="flex flex-wrap gap-2">
                       {project.tags?.map((tag, tagIndex) => (
                         <span 
