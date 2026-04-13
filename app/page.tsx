@@ -35,7 +35,6 @@ export default function Home() {
           variants={itemVariants}
           className="bg-neutral-900 border border-white/10 rounded-3xl relative overflow-hidden md:col-span-2 md:row-span-2 hover:scale-[1.02] transition-transform duration-300 min-h-[400px]"
         >
-          {/* Fotka jako pozadí (absolutně pozicionovaná) */}
           <div className="absolute inset-0 z-0 h-full w-full">
             <Image
               src="/profile-picture.jpg"
@@ -46,12 +45,9 @@ export default function Home() {
             />
           </div>
 
-          {/* Překryvná vrstva s gradientem (zajišťuje čitelnost textu) */}
           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-neutral-900 via-neutral-900/80 to-transparent z-10" />
 
-          {/* Obsahová vrstva na topu (z-20) */}
           <div className="relative z-20 h-full flex flex-col justify-between p-8">
-            {/* Horní řádek (Lokace na topu, na fotce) */}
             <div className="flex justify-end">
               <div className="flex items-center gap-2 px-4 py-2 bg-neutral-950/60 border border-white/10 rounded-full text-sm font-medium backdrop-blur-sm shadow-xl">
                 <span className="relative flex h-2 w-2 mr-1">
@@ -65,7 +61,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Spodní řádek (Jméno a Popis na tmavém gradientu) */}
             <div className="mt-auto">
               <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Albert Bastl</h1>
               <p className="text-neutral-200 text-lg leading-relaxed max-w-xl">
@@ -84,12 +79,11 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* 2. Socials - Nové vylepšené horizontalní karty */}
+        {/* 2. Socials */}
         <motion.div
           variants={itemVariants}
           className="bg-neutral-900 border border-white/10 rounded-3xl p-6 hover:scale-[1.02] transition-transform duration-300 md:col-span-1 md:row-span-1 flex flex-col justify-center gap-4"
         >
-          {/* LinkedIn Karta */}
           <a href="https://www.linkedin.com/in/albert-bastl-16194936b/" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors shadow-sm">
             <div className="p-2 bg-white/10 rounded-full text-white group-hover:scale-110 transition-transform">
               <FiLinkedin size={18} />
@@ -101,7 +95,6 @@ export default function Home() {
             <ArrowUpRight size={16} className="text-neutral-700 group-hover:text-blue-400 transition-colors" />
           </a>
 
-          {/* GitHub Karta */}
           <a href="https://github.com/albertbastl" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors shadow-sm">
             <div className="p-2 bg-white/10 rounded-full text-white group-hover:scale-110 transition-transform">
               <FiGithub size={18} />
@@ -113,8 +106,7 @@ export default function Home() {
             <ArrowUpRight size={16} className="text-neutral-700 group-hover:text-neutral-100 transition-colors" />
           </a>
 
-          {/* CV Karta - S ikonou stažení */}
-          <a href="/cv.pdf" download className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors shadow-sm border border-neutral-700 hover:border-neutral-500">
+          <a href="/CV-Albert-Bastl.pdf" download className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors shadow-sm border border-neutral-700 hover:border-neutral-500">
             <div className="p-2 bg-white/10 rounded-full text-white group-hover:scale-110 transition-transform">
               <FileUser size={18} />
             </div>
@@ -152,19 +144,20 @@ export default function Home() {
           <h2 className="text-lg font-bold mb-3 text-neutral-200 px-2">Chosen Projects</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[
-              { 
-                name: "iansa.eu", 
-                desc: "Colaborated on custom journal editorial system.", 
-                link: "https://www.iansa.eu" 
-              },
               {
                 name: "naskalu.cz",
                 desc: "Bored of not being able to find boulders in the nature?",
                 link: "https://naskalu.cz",
-                disabled: true // <--- Tady je přidaný příznak
+                tags: ["Full-stack app"]
               },
+              { 
+                name: "iansa.eu", 
+                desc: "Colaborated on custom journal editorial system.", 
+                link: "https://www.iansa.eu",
+                tags: ["PHP"]
+              },
+
             ].map((project, i) => {
-              // Pokud je projekt dočasně vypnutý (disabled: true)
               if (project.disabled) {
                 return (
                   <div key={i} className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.01] border border-white/5 opacity-50 cursor-not-allowed">
@@ -181,14 +174,24 @@ export default function Home() {
                 );
               }
 
-              // Pokud projekt funguje normálně
               return (
                 <a key={i} href={project.link} target={project.link.startsWith('http') ? "_blank" : "_self"} rel="noopener noreferrer" className="group flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] hover:bg-white/5 border border-white/5 transition-colors">
                   <div>
                     <h3 className="font-semibold text-white group-hover:text-neutral-300 transition-colors text-base">{project.name}</h3>
-                    <p className="text-sm text-neutral-500 mt-1">{project.desc}</p>
+                    <p className="text-sm text-neutral-500 mt-1 mb-3">{project.desc}</p>
+                    {/* Zde jsou přidány štítky pro projekty */}
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags?.map((tag, tagIndex) => (
+                        <span 
+                          key={tagIndex} 
+                          className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-white/5 text-neutral-400 border border-white/10 group-hover:border-white/20 transition-colors"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <ArrowUpRight size={22} className="text-neutral-600 group-hover:text-neutral-300 transition-colors" />
+                  <ArrowUpRight size={22} className="text-neutral-600 group-hover:text-neutral-300 transition-colors self-start" />
                 </a>
               );
             })}
