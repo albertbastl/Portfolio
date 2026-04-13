@@ -156,8 +156,8 @@ export default function Home() {
                 link: "https://www.iansa.eu",
                 tags: ["PHP"]
               },
-
-            ].map((project, i) => {
+            // ZDE JE ZMĚNA: explicitní definice typu pro parametr `project`
+            ].map((project: { name: string; desc: string; link: string; tags: string[]; disabled?: boolean }, i) => {
               if (project.disabled) {
                 return (
                   <div key={i} className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.01] border border-white/5 opacity-50 cursor-not-allowed">
