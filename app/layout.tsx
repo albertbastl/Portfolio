@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next"; // Přidán Viewport import
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,10 +12,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// 1. Takhle Next.js správně nastavuje barvu "okolí" webu v mobilu
+// Opravený Viewport (odstraněn neexistující backgroundColor)
 export const viewport: Viewport = {
   themeColor: "#030303",
-  backgroundColor: "#030303",
   width: "device-width",
   initialScale: 1,
 };
@@ -46,7 +45,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // Přidali jsme h-full a bg i do html tagu pro eliminaci bílých ploch
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth bg-[#030303]`}
