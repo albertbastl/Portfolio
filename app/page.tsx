@@ -62,8 +62,8 @@ export default function Portfolio() {
         )}
       </AnimatePresence>
 
-      {/* HERO SECTION */}
-      <section className="h-[75vh] flex flex-col items-center justify-center relative px-6">
+      {/* HERO SECTION - Responzivní výška pro lepší "peek" efekt */}
+      <section className="h-[65vh] md:h-[75vh] flex flex-col items-center justify-center relative px-6">
         <motion.div
           ref={heroTextRef}
           initial={{ opacity: 0, y: 20 }}
@@ -91,12 +91,12 @@ export default function Portfolio() {
         </motion.div>
       </section>
 
-      {/* SECTION DIVIDER */}
+      {/* SECTION DIVIDER - Kompaktnější na mobilu */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
-        className="w-full max-w-5xl mx-auto px-6 flex items-center gap-6 mb-16 md:mb-20 relative"
+        className="w-full max-w-5xl mx-auto px-6 flex items-center gap-6 mb-10 md:mb-20 relative"
       >
         <div className="text-[9px] uppercase tracking-[0.3em] text-neutral-600 whitespace-nowrap font-medium">selected works</div>
         <div className="h-[1px] w-full bg-gradient-to-r from-white/[0.07] to-transparent"></div>
@@ -104,23 +104,24 @@ export default function Portfolio() {
 
       {/* WORK SECTION */}
       <section className="max-w-5xl mx-auto px-6 pb-20 md:pb-32 relative">
-        <div className="flex flex-col gap-24 md:gap-32">
+        <div className="flex flex-col gap-20 md:gap-32">
           {PROJECTS.map((project, index) => (
             <motion.a
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
               key={project.id}
+              // První projekt se animuje hned, ostatní při scrollu
               initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} 
-              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileInView={index === 0 ? undefined : { opacity: 1, y: 0 }}
+              animate={index === 0 ? { opacity: 1, y: 0 } : undefined}
+              viewport={{ once: true, amount: 0.1 }} 
+              transition={{ duration: 0.8, delay: index === 0 ? 0.6 : 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="group cursor-pointer block"
             >
-              {/* PROJECT CARD WITH HIGH-DEFINITION BORDERS - Responzivní rohy */}
+              {/* PROJECT CARD */}
               <div className="w-full aspect-[16/9] bg-neutral-950 rounded-2xl md:rounded-[2.5rem] mb-6 overflow-hidden border border-white/15 relative flex items-center justify-center transition-all duration-700 group-hover:border-white/30 group-hover:shadow-[0_0_80px_rgba(255,255,255,0.03)]">
                 
-                {/* PROJECT IMAGE */}
                 {project.image && (
                   <Image 
                     src={project.image}
@@ -132,21 +133,17 @@ export default function Portfolio() {
                   />
                 )}
 
-                {/* INNER GLASS RING - Responzivní rohy */}
                 <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl md:rounded-[2.5rem] z-10 pointer-events-none" />
-
-                {/* OVERLAY GRADIENT ON HOVER */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none" />
                 
-                {/* HOVER CALL-TO-ACTION (ARROW) */}
                 <div className="absolute w-14 h-14 md:w-16 md:h-16 bg-white text-black rounded-full flex items-center justify-center opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 ease-[0.16,1,0.3,1] z-20 shadow-2xl pointer-events-none">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
                   </svg>
                 </div>
               </div>
 
-              {/* PROJECT INFO - Vylepšený layout pro konzistentní datum */}
+              {/* PROJECT INFO */}
               <div className="flex justify-between items-center px-4 md:px-6">
                 <div className="space-y-0.5 flex-1 pr-4">
                   <h3 className="text-2xl md:text-5xl font-medium tracking-tight lowercase text-neutral-200 group-hover:text-white transition-colors truncate">
@@ -154,7 +151,6 @@ export default function Portfolio() {
                   </h3>
                   <p className="text-neutral-500 text-xs md:text-base uppercase tracking-[0.2em] font-medium truncate">{project.role}</p>
                 </div>
-                {/* Datum fixně zarovnané doprava */}
                 <p className="text-neutral-600 font-mono text-sm md:text-base w-16 text-right tabular-nums">
                   {project.year}
                 </p>
@@ -164,7 +160,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* CONTACT SECTION - Zmenšený horní padding na mobilu */}
+      {/* CONTACT SECTION */}
       <section className="max-w-4xl mx-auto px-6 pb-48 pt-12 md:pt-20 relative">
         <motion.div 
           className="flex flex-col items-center text-center border-t border-white/[0.05] pt-20 md:pt-32"
@@ -187,7 +183,7 @@ export default function Portfolio() {
         </motion.div>
       </section>
 
-      {/* FOOTER - Opravené mezery a formátování */}
+      {/* FOOTER */}
       <footer className="py-16 text-center border-t border-white/[0.02] px-6">
         <div className="flex flex-wrap justify-center items-center gap-x-2.5 gap-y-1 text-xs md:text-sm text-neutral-800 uppercase tracking-[0.3em] font-medium">
           <span>&copy; {new Date().getFullYear()}</span>
