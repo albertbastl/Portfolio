@@ -1,190 +1,193 @@
 "use client";
 
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Mail, MapPin, ArrowUpRight, ArrowDown, FileUser } from "lucide-react";
-import { FiLinkedin } from "react-icons/fi";
-import { SiNextdotjs } from "react-icons/si";
+import { useRef } from "react";
 
-export default function Home() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
+const PROJECTS = [
+  { 
+    id: 1, 
+    title: "naskalu", 
+    role: "end-to-end development", 
+    year: "2026",
+    link: "https://naskalu.cz",
+    image: "/naskalu.png" 
+  },
+  { 
+    id: 2, 
+    title: "iansa journal", 
+    role: "peer-review platform", 
+    year: "2026",
+    link: "https://iansa.eu",
+    image: "/iansa.png" 
+  },
+];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+export default function Portfolio() {
+  const heroTextRef = useRef<HTMLDivElement>(null);
+  const isHeroTextInView = useInView(heroTextRef);
+  const showNav = !isHeroTextInView;
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-white flex items-center justify-center p-4 sm:p-8 font-sans">
-      <motion.div
-        className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-4"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+    <main className="min-h-screen bg-[#030303] text-neutral-100 selection:bg-white/10 selection:text-white font-sans relative">
+      
+      {/* FLOATING NAVIGATION PILL */}
+      <AnimatePresence>
+        {showNav && (
+          <motion.div
+            initial={{ y: -20, opacity: 0, scale: 0.95 }}
+            animate={{ y: 0, opacity: 1, scale: 1 }}
+            exit={{ y: -20, opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed top-8 left-8 z-[100] flex items-center gap-6 px-5 py-2.5 md:px-7 md:py-3.5 bg-neutral-900/40 backdrop-blur-2xl border border-white/15 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+          >
+            <button 
+              onClick={scrollToTop}
+              className="font-bold tracking-tighter lowercase text-white hover:opacity-70 transition-opacity"
+            >
+              <span className="hidden md:block text-lg">albert bastl.</span>
+              <span className="block md:hidden text-sm">albert.</span>
+            </button>
+            <div className="w-[1px] h-4 bg-white/20"></div>
+            <nav className="flex items-center gap-5 md:gap-7">
+              <Link href="/cv-albert-bastl.pdf" target="_blank" className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-400 hover:text-white transition-colors font-medium">cv</Link>
+              <Link href="mailto:albert.bastl@protonmail.com" className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-neutral-400 hover:text-white transition-colors font-medium">mail</Link>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* HERO SECTION */}
+      <section className="h-[75vh] flex flex-col items-center justify-center relative px-6">
+        <motion.div
+          ref={heroTextRef}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col items-center text-center"
+        >
+          <h1 className="text-6xl md:text-9xl font-bold tracking-tighter lowercase text-white mb-4">
+            albert bastl
+          </h1>
+          <h2 className="text-xl md:text-2xl font-medium tracking-tight lowercase text-neutral-500 mb-10">
+            let my work <span className="text-neutral-100">speak for me.</span>
+          </h2>
+          
+          <Link 
+            href="/cv-albert-bastl.pdf" 
+            target="_blank"
+            className="group flex items-center gap-3 px-8 py-4 bg-white/[0.03] border border-white/10 rounded-full hover:bg-white/10 transition-all duration-300"
+          >
+            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400 group-hover:text-white transition-colors">view cv</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-500 group-hover:text-white transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </Link>
+        </motion.div>
+      </section>
+
+      {/* SECTION DIVIDER */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
+        className="w-full max-w-5xl mx-auto px-6 flex items-center gap-6 mb-16 relative"
       >
-        {/* 1. Hlavní dlaždice s fotkou jako pozadím a gradientem */}
-        <motion.div
-          variants={itemVariants}
-          className="bg-neutral-900 border border-white/10 rounded-3xl relative overflow-hidden md:col-span-2 md:row-span-2 hover:scale-[1.02] transition-transform duration-300 min-h-[400px]"
-        >
-          <div className="absolute inset-0 z-0 h-full w-full">
-            <Image
-              src="/profile-picture.jpg"
-              alt="Albert Bastl - Portrét"
-              fill
-              priority
-              className="object-cover object-[center_85%]"
-            />
-          </div>
-
-          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-neutral-900 via-neutral-900/80 to-transparent z-10" />
-
-          <div className="relative z-20 h-full flex flex-col justify-between p-8">
-            <div className="flex justify-end">
-              <div className="flex items-center gap-2 px-4 py-2 bg-neutral-950/60 border border-white/10 rounded-full text-sm font-medium backdrop-blur-sm shadow-xl">
-                <span className="relative flex h-2 w-2 mr-1">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                <MapPin size={14} className="text-neutral-400" />
-                <span className="text-neutral-100">Prague, Czech Republic</span>
-                <span className="text-neutral-600 mx-1">|</span>
-                <span className="text-neutral-400 hidden sm:inline">Open to remote</span>
-              </div>
-            </div>
-
-            <div className="mt-auto">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Albert Bastl</h1>
-              <p className="text-neutral-200 text-lg leading-relaxed max-w-xl">
-                A true developer focused on proven patterns, scalability, and human-centric UX in the age of vibe coding.
-              </p>
-              <div className="mt-6 flex items-center">
-                <a
-                  href="mailto:albertbastl@protonmail.com"
-                  className="group flex items-center gap-2 px-5 py-2.5 bg-white text-black rounded-full font-medium hover:bg-neutral-200 transition-colors"
-                >
-                  <Mail size={18} />
-                  <span>Let's talk</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* 2. Socials */}
-        <motion.div
-          variants={itemVariants}
-          className="bg-neutral-900 border border-white/10 rounded-3xl p-6 hover:scale-[1.02] transition-transform duration-300 md:col-span-1 md:row-span-1 flex flex-col justify-center gap-4"
-        >
-          <a href="https://www.linkedin.com/in/albert-bastl-16194936b/" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors shadow-sm">
-            <div className="p-2 bg-white/10 rounded-full text-white group-hover:scale-110 transition-transform">
-              <FiLinkedin size={18} />
-            </div>
-            <div className="flex-grow">
-              <p className="text-white font-medium text-sm group-hover:text-blue-400 transition-colors">LinkedIn</p>
-              <p className="text-neutral-500 text-xs">Albert Bastl</p>
-            </div>
-            <ArrowUpRight size={16} className="text-neutral-700 group-hover:text-blue-400 transition-colors" />
-          </a>
-
-          <a href="/CV-Albert-Bastl.pdf" download className="group flex items-center gap-4 p-3 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] transition-colors shadow-sm border border-neutral-700 hover:border-neutral-500">
-            <div className="p-2 bg-white/10 rounded-full text-white group-hover:scale-110 transition-transform">
-              <FileUser size={18} />
-            </div>
-            <div className="flex-grow">
-              <p className="text-white font-medium text-sm group-hover:text-green-400 transition-colors">Curriculum Vitae</p>
-              <p className="text-neutral-500 text-xs">Download (PDF)</p>
-            </div>
-            <ArrowDown size={16} className="text-neutral-700 group-hover:text-green-400 transition-colors" />
-          </a>
-        </motion.div>
-
-        {/* 3. Tech Stack */}
-        <motion.div
-          variants={itemVariants}
-          className="bg-neutral-900 border border-white/10 rounded-3xl p-8 hover:scale-[1.02] transition-transform duration-300 md:col-span-1 md:row-span-1 flex flex-col justify-between overflow-hidden group"
-        >
-          <h2 className="text-xl font-bold mb-6 text-neutral-200 z-10">Stack</h2>
-          <div className="flex-grow flex flex-col items-center justify-center gap-6 relative z-10">
-            <div className="relative group-hover:scale-105 transition-transform duration-500">
-              <div className="absolute inset-0 bg-white/5 rounded-full blur-2xl opacity-60 group-hover:opacity-100 transition-opacity" />
-              <SiNextdotjs className="relative z-10 text-[100px] text-white filter drop-shadow-lg" />
-            </div>
-            <p className="text-neutral-300 text-lg leading-relaxed text-center max-w-[220px]">
-              Specialized in Next.js and everything around that.
-            </p>
-          </div>
-          <div className="h-4"></div>
-        </motion.div>
-
-        {/* 4. Projekty */}
-        <motion.div
-          variants={itemVariants}
-          className="bg-neutral-900 border border-white/10 rounded-3xl p-4 hover:scale-[1.02] transition-transform duration-300 md:col-span-3 md:row-span-1 flex flex-col justify-center"
-        >
-          <h2 className="text-lg font-bold mb-3 text-neutral-200 px-2">Chosen Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              {
-                name: "naskalu.cz",
-                desc: "Bored of not being able to find boulders in the nature?",
-                link: "https://naskalu.cz",
-                tags: ["Full-stack app"]
-              },
-              { 
-                name: "iansa.eu", 
-                desc: "Colaborated on custom journal editorial system.", 
-                link: "https://www.iansa.eu",
-                tags: ["PHP"]
-              },
-            ].map((project: { name: string; desc: string; link: string; tags: string[]; disabled?: boolean }, i) => {
-              if (project.disabled) {
-                return (
-                  <div key={i} className="flex items-center justify-between p-6 rounded-2xl bg-white/[0.01] border border-white/5 opacity-50 cursor-not-allowed">
-                    <div>
-                      <h3 className="font-semibold text-white text-base flex items-center gap-2">
-                        {project.name}
-                        <span className="text-[10px] font-bold uppercase tracking-wider bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full border border-red-500/20">
-                          Currently Down
-                        </span>
-                      </h3>
-                      <p className="text-sm text-neutral-500 mt-1">{project.desc}</p>
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <a key={i} href={project.link} target={project.link.startsWith('http') ? "_blank" : "_self"} rel="noopener noreferrer" className="group flex items-center justify-between p-6 rounded-2xl bg-white/[0.02] hover:bg-white/5 border border-white/5 transition-colors">
-                  <div>
-                    <h3 className="font-semibold text-white group-hover:text-neutral-300 transition-colors text-base">{project.name}</h3>
-                    <p className="text-sm text-neutral-500 mt-1 mb-3">{project.desc}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags?.map((tag, tagIndex) => (
-                        <span 
-                          key={tagIndex} 
-                          className="text-[11px] font-medium px-2.5 py-1 rounded-md bg-white/5 text-neutral-400 border border-white/10 group-hover:border-white/20 transition-colors"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <ArrowUpRight size={22} className="text-neutral-600 group-hover:text-neutral-300 transition-colors self-start" />
-                </a>
-              );
-            })}
-          </div>
-        </motion.div>
+        <div className="text-[9px] uppercase tracking-[0.3em] text-neutral-600 whitespace-nowrap font-medium">selected works</div>
+        <div className="h-[1px] w-full bg-gradient-to-r from-white/[0.07] to-transparent"></div>
       </motion.div>
+
+      {/* WORK SECTION */}
+      <section className="max-w-5xl mx-auto px-6 pb-32 relative">
+        <div className="flex flex-col gap-24 md:gap-32">
+          {PROJECTS.map((project, index) => (
+            <motion.a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} 
+              transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="group cursor-pointer block"
+            >
+              {/* PROJECT CARD WITH HIGH-DEFINITION BORDERS */}
+              <div className="w-full aspect-[16/9] bg-neutral-950 rounded-[2.5rem] mb-8 overflow-hidden border border-white/15 relative flex items-center justify-center transition-all duration-700 group-hover:border-white/30 group-hover:shadow-[0_0_80px_rgba(255,255,255,0.03)]">
+                
+                {/* PROJECT IMAGE */}
+                {project.image && (
+                  <Image 
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 ease-[0.16,1,0.3,1]"
+                    sizes="(max-width: 768px) 100vw, 1024px"
+                    priority={index === 0}
+                  />
+                )}
+
+                {/* INNER GLASS RING - Toto vytvoří ten 'edge' efekt na černém UI */}
+                <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[2.5rem] z-10 pointer-events-none" />
+
+                {/* OVERLAY GRADIENT ON HOVER */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.08] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none" />
+                
+                {/* HOVER CALL-TO-ACTION (ARROW) */}
+                <div className="absolute w-16 h-16 bg-white text-black rounded-full flex items-center justify-center opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 ease-[0.16,1,0.3,1] z-20 shadow-2xl pointer-events-none">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300">
+                    <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </div>
+              </div>
+
+              {/* PROJECT INFO */}
+              <div className="flex justify-between items-end px-6">
+                <div className="space-y-1">
+                  <h3 className="text-3xl md:text-5xl font-medium tracking-tight lowercase text-neutral-200 group-hover:text-white transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-neutral-500 text-sm md:text-base uppercase tracking-[0.2em] font-medium">{project.role}</p>
+                </div>
+                <p className="text-neutral-600 font-mono text-sm mb-2">{project.year}</p>
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </section>
+
+      {/* CONTACT SECTION */}
+      <section className="max-w-4xl mx-auto px-6 pb-48 pt-20 relative">
+        <motion.div 
+          className="flex flex-col items-center text-center border-t border-white/[0.05] pt-32"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-5xl md:text-8xl font-bold tracking-tighter lowercase text-white mb-10">
+            contact <span className="text-neutral-600 italic">me.</span>
+          </h2>
+          <Link 
+            href="mailto:albert.bastl@protonmail.com" 
+            className="group flex items-center gap-4 px-12 py-6 bg-white text-black rounded-full hover:scale-105 active:scale-95 transition-all duration-500 ease-[0.16, 1, 0.3, 1]"
+          >
+            <span className="text-sm md:text-base font-bold tracking-widest uppercase">get in touch</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300">
+              <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+            </svg>
+          </Link>
+        </motion.div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-16 text-center text-[10px] text-neutral-800 uppercase tracking-[0.5em] border-t border-white/[0.02]">
+        &copy; {new Date().getFullYear()} albert bastl &mdash; built with next.js
+      </footer>
     </main>
   );
 }
