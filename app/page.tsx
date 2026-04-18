@@ -36,7 +36,7 @@ export default function Portfolio() {
   return (
     <main className="min-h-screen bg-[#030303] text-neutral-100 selection:bg-white/10 selection:text-white font-sans relative">
       
-      {/* FLOATING NAVIGATION PILL - Opravená pozice */}
+      {/* FLOATING NAVIGATION PILL */}
       <AnimatePresence>
         {showNav && (
           <motion.div
@@ -125,7 +125,8 @@ export default function Portfolio() {
                     src={project.image}
                     alt={project.title}
                     fill
-                    className="object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 ease-[0.16,1,0.3,1]"
+                    // ZMĚNA ZDE: opacity-90 místo opacity-60
+                    className="object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 ease-[0.16,1,0.3,1]"
                     sizes="(max-width: 768px) 100vw, 1024px"
                     priority={index === 0}
                   />
@@ -155,7 +156,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* CONTACT SECTION - Menší mezera k footeru na mobilu */}
+      {/* CONTACT SECTION */}
       <section className="max-w-4xl mx-auto px-6 pb-20 md:pb-48 pt-12 md:pt-20 relative">
         <motion.div 
           className="flex flex-col items-center text-center border-t border-white/[0.05] pt-20 md:pt-32"
