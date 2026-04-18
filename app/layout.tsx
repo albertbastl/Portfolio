@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next"; // Přidán Viewport import
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,12 +12,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// 1. Takhle Next.js správně nastavuje barvu "okolí" webu v mobilu
+export const viewport: Viewport = {
+  themeColor: "#030303",
+  backgroundColor: "#030303",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  // Lowercase titulky ladí s tvým minimalistickým stylem
   title: "albert bastl | portfolio",
   description: "building high-performance web systems and peer-review platforms. minimalist by design, technical by nature. let the work speak.",
-  
-  // Tohle je "neprůstřelná" konfigurace ikon
   icons: {
     icon: [
       { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -28,13 +33,10 @@ export const metadata: Metadata = {
     apple: [
       { url: '/apple-touch-icon.png' },
     ],
-    // Zpětná kompatibilita
     other: [
       { rel: 'shortcut icon', url: '/favicon.ico' },
     ],
   },
-  
-  // Propojení s Android/Chrome manifestem
   manifest: '/site.webmanifest',
 };
 
@@ -44,9 +46,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // Přidali jsme h-full a bg i do html tagu pro eliminaci bílých ploch
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth bg-[#030303]`}
+      style={{ backgroundColor: '#030303' }}
     >
       <body className="min-h-full bg-[#030303] text-neutral-100 selection:bg-white/10 selection:text-white flex flex-col font-sans">
         {children}
